@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin - Hotspot Well</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .btn { background: #4CAF50; color: white; padding: 15px; margin: 10px; border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <h2>🎫 Generate Voucher</h2>
+    <button class="btn" onclick="generate(3)">3 Jam - Rp 3.000</button>
+    <button class="btn" onclick="generate(6)">6 Jam - Rp 5.000</button>
+    
+    <div id="result" style="margin-top: 20px; padding: 20px; background: #e8f5e9; border-radius: 10px;"></div>
+    
+    <script>
+    async function generate(hours) {
+        // Generate kode
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        let voucher = '';
+        for(let i = 0; i < 6; i++) {
+            voucher += chars[Math.floor(Math.random() * chars.length)];
+        }
+        
+        // Kirim ke MikroTik
+        const response = await fetch(`http://192.168.88.1/rest/hotspot/user`, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Basic ' + btoa('admin:password'),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: voucher,
+                password: voucher,
+                "limit-uptime": `${hours}h`,
+                disabled: false
+            })
+        });
+        
+        document.getElementById('result').innerHTML = `
+            <h3>✅ Voucher Created!</h3>
+            <p><strong>Code:</strong> ${voucher}</p>
+            <p><strong>Duration:</strong> ${hours} hours</p>
+            <p><strong>Price:</strong> Rp ${hours == 3 ? '3.000' : '5.000'}</p>
+            <p>Username & Password: <code>${voucher}</code></p>
+        `;
+    }
+    </script>
+</body>
+</html>
