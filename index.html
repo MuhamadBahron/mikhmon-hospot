@@ -1,0 +1,43 @@
+<!-- File: index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hotspot Well - MIKMON</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: Arial; background: linear-gradient(135deg, #667eea, #764ba2); padding: 20px; }
+        .container { background: white; max-width: 400px; margin: auto; padding: 30px; border-radius: 15px; }
+        .voucher-input { width: 100%; padding: 15px; border: 2px solid #4CAF50; border-radius: 10px; font-size: 18px; text-align: center; }
+        .btn { background: #4CAF50; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🌿 Hotspot Well</h2>
+        <input type="text" class="voucher-input" placeholder="Masukkan kode voucher" id="voucher">
+        <button class="btn" onclick="login()">🔓 LOGIN</button>
+        
+        <div style="margin-top: 30px;">
+            <h3>🎫 Generate Voucher</h3>
+            <button class="btn" onclick="generate(3)">3 Jam - Rp 3.000</button>
+            <button class="btn" onclick="generate(6)">6 Jam - Rp 5.000</button>
+        </div>
+    </div>
+    
+    <script>
+    function login() {
+        const code = document.getElementById('voucher').value;
+        window.location.href = `http://192.168.88.1/login?username=${code}&password=${code}`;
+    }
+    
+    function generate(hours) {
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        let voucher = '';
+        for(let i = 0; i < 6; i++) {
+            voucher += chars[Math.floor(Math.random() * chars.length)];
+        }
+        alert(`Voucher ${hours} Jam: ${voucher}\n\nUsername: ${voucher}\nPassword: ${voucher}`);
+    }
+    </script>
+</body>
+</html>
